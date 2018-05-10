@@ -33,21 +33,21 @@ app.get('/todos',(req,res)=>{
 //GET /todos/numberid
 app.get('/todos/:id',(req,res)=>{
  var id = req.params.id;
+ //console.log(id);
  if(!ObjectID.isValid(id))
  {
    res.status(404).send();
  }
 
- Todo.findById(id).then((result)=>{
-   if(!result){
-   return res.send('No record with this id');
+ Todo.findById(id).then((todo)=>{
+   if(!todo){
+    // console.log("Can't find a log");
+   return res.status(404).send();
  }
 
-     res.send(JSON.stringify(result,undefined,2));
- },(e)=>{
-   res.status(400).send('Error occured'); });
-});
-
+    return res.send({todo});
+   }).catch((e)=>res.status(400));
+  });
 app.listen(3000,()=>{
   console.log('Started on port 3000');
 });
