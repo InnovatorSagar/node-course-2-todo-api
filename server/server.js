@@ -20,6 +20,7 @@ app.post('/todos', (req, res) => {
   todo.save().then((doc) => {
     res.send(doc);
   }, (e) => {
+    console.log('failed to fetch data');
     res.status(400).send(e);
   });
 });
@@ -34,18 +35,18 @@ app.get('/todos', (req, res) => {
 
 app.get('/todos/:id', (req, res) => {
   var id = req.params.id;
-
+console.log(id);
   if (!ObjectID.isValid(id)) {
-    return res.status(404).send();
+    // console.log('Invalid id');
+    return res.status(404).send('Invalid');
   }
-
   Todo.findById(id).then((todo) => {
     if (!todo) {
-      return res.status(404).send();
+      return res.status(404).send("CAN't Find matching todo");
     }
 
     res.send({todo});
-  }).catch((e) => {
+  },(e) => {
     res.status(400).send();
   });
 });
